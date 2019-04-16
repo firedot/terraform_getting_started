@@ -12,6 +12,7 @@ Repository containing the code from the Terraform getting started guide
 - Create simple terraform configuration that:
    - uses AWS provider
    - creats EC2 instance
+   - has resources that depend on other resources
 - Divide the terraform configuration: 
    - put all outputs in separate file
    - put all variables in separate file
