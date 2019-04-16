@@ -8,6 +8,29 @@ resource "aws_instance" "example" {
   ami                    = "${var.ami_id}"
   instance_type          = "t2.micro"
   vpc_security_group_ids = "${var.vpc_security_group_ids}"
+
+  provisioner "file" {
+    source      = "scripts/deploy_psql.sh"
+    destination = "/tmp/deploy_psql.sh"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("/Users/alext/.ssh/id_rsa")}"
+    }
+  }
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("/Users/alext/.ssh/id_rsa")}"
+    }
+
+    inline = ["sudo chmod +x /tmp/deploy_psql.sh",
+      "sudo bash /tmp/deploy_psql.sh",
+    ]
+  }
 }
 
 # The code below will create an implicit dependency on the aws_instance "example"
